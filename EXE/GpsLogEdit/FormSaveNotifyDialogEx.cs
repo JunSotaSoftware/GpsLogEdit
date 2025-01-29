@@ -1,0 +1,93 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace GpsLogEdit
+{
+    public partial class FormSaveNotifyDialogEx : Form
+    {
+        public FormSaveNotifyDialogEx()
+        {
+            InitializeComponent();
+        }
+
+
+        public SaveNotifyInfo ShowDialog(SaveNotifyInfo info, string message)
+        {
+            labelSaveNotifyMsg.Text = message;
+            textBoxDataName.Text = info.GetName();
+            radioButtonSeparateFile.Checked = info.GetSeparate();
+            radioButtonOneFile.Checked = !info.GetSeparate();
+            if (info.GetFileType() == FileType.Gpx)
+            {
+                // GPSファイルへは色を保存できないので指定できないように
+                listViewTrackInfo.Columns.RemoveAt(2);
+                labelColorChangeMsg.Visible = false;
+            }
+            for (int i = 0; i < info.GetTrackCount(); i++)
+            {
+                string[] columnsData = new string[3];
+                columnsData[0] = (i + 1).ToString();
+                columnsData[1] = String.Format("{0} - {1}", info.GetOneTrack(i).GetStartTime(), info.GetOneTrack(i).GetLastTime());
+                columnsData[2] = " ";
+                ListViewItem item = new ListViewItem(columnsData);
+                item.SubItems[2].BackColor = info.GetColor(i);
+                item.UseItemStyleForSubItems = false;
+                listViewTrackInfo.Items.Add(item);
+
+            }
+            DialogResult result = this.ShowDialog();
+            info.SetResult(result);
+            for (int i = 0; i < info.GetTrackCount(); i++)
+            {
+                ListViewItem item = listViewTrackInfo.Items[i];
+                info.SetColor(i, item.SubItems[2].BackColor);
+            }
+            info.SetName(textBoxDataName.Text);
+            info.SetSeparate(radioButtonSeparateFile.Checked);
+            return info;
+        }
+
+
+        private void formSaveNotifyDialogEx_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Escape)
+            {
+                this.Close();
+            }
+        }
+
+        private void listViewTrackInfo_MouseClick(object sender, MouseEventArgs e)
+        {
+            ListViewHitTestInfo info = listViewTrackInfo.HitTest(e.X, e.Y);
+            if ((info != null) && (info.Item != null))
+            {
+                // 行はinfo.Itemで取得できる
+                // 以下は、列の判断
+                for (int column = 0; column < info.Item.SubItems.Count; column++)
+                {
+                    if (info.Item.SubItems[column] == info.SubItem)
+                    {
+                        // 行と列が分かった
+                        if (column == 2)
+                        {
+                            if (colorDialog1.ShowDialog() == DialogResult.OK)
+                            {
+                                ListViewItem item = listViewTrackInfo.Items[info.Item.Index];
+                                item.SubItems[2].BackColor = colorDialog1.Color;
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+
+    }
+}

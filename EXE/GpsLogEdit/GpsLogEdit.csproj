@@ -1,0 +1,70 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <ApplicationIcon>gps_2796495.ico</ApplicationIcon>
+    <Company>Jun Sota</Company>
+    <Authors>Jun Sota</Authors>
+    <Copyright>Copyright(C) 2024-2025 Sota.</Copyright>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="FormSaveNotifyDialog.cs" />
+    <Compile Remove="FormSaveNotifyDialog.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="FormSaveNotifyDialog.resx" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="cross.png" />
+    <None Remove="home.png" />
+    <None Remove="scissors.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="gps_2796495.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="cross.png" />
+    <EmbeddedResource Include="scissors.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Mapsui.WindowsForms" Version="5.0.0-beta.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+</Project>
