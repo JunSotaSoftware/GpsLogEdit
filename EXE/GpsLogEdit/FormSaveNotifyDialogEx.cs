@@ -1,23 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿//
+// 保存確認画面を表示
+//
+// MIT License
+// Copyright(c) 2024-2025 Sota. 
 
 namespace GpsLogEdit
 {
     public partial class FormSaveNotifyDialogEx : Form
     {
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
         public FormSaveNotifyDialogEx()
         {
             InitializeComponent();
         }
 
-
+        /// <summary>
+        /// 書き込み確認を表示
+        /// </summary>
+        /// <param name="info">確認情報</param>
+        /// <param name="message">labelに表示するメッセージ</param>
+        /// <returns>確認情報</returns>
         public SaveNotifyInfo ShowDialog(SaveNotifyInfo info, string message)
         {
             labelSaveNotifyMsg.Text = message;
@@ -54,7 +58,11 @@ namespace GpsLogEdit
             return info;
         }
 
-
+        /// <summary>
+        /// ESCキーの処理
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void formSaveNotifyDialogEx_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == (char)Keys.Escape)
@@ -63,6 +71,11 @@ namespace GpsLogEdit
             }
         }
 
+        /// <summary>
+        /// トラックの表示色がクリックされたときの処理
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void listViewTrackInfo_MouseClick(object sender, MouseEventArgs e)
         {
             ListViewHitTestInfo info = listViewTrackInfo.HitTest(e.X, e.Y);

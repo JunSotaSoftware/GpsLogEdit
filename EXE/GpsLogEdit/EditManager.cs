@@ -1,4 +1,10 @@
-﻿namespace GpsLogEdit
+﻿//
+// GPSデータ編集マネージャ
+//
+// MIT License
+// Copyright(c) 2024-2025 Sota. 
+
+namespace GpsLogEdit
 {
     /// <summary>
     /// 編集データクラス
@@ -8,6 +14,11 @@
         public int dataNumber;
         public EditType editType;
 
+        /// <summary>
+        /// 1ポイントの編集データを作成
+        /// </summary>
+        /// <param name="index">全GPSデータ中のデータ番号</param>
+        /// <param name="type">このポイントに指定する編集のタイプ(Divide/Delete)</param>
         public EditData(int index, EditType type)
         {
             dataNumber = index;
@@ -30,7 +41,7 @@
     }
 
     /// <summary>
-    /// GPXファイル編集マネージャクラス
+    /// GPSデータ編集マネージャクラス
     /// </summary>
     internal class EditManager
     {
@@ -49,7 +60,7 @@
         /// </summary>
         /// <param name="index">編集位置のデータ番号</param>
         /// <param name="type">編集のタイプ</param>
-        /// <returns>編集した結果セットされているEditType</returns>
+        /// <returns>編集した結果このデータにセットされている編集のタイプ</returns>
         public EditType toggleEditState(int index, EditType type)
         {
             EditType result = EditType.None;
@@ -97,6 +108,11 @@
             return result;
         }
 
+        /// <summary>
+        /// 編集が加えられたデータの数を返す
+        /// </summary>
+        /// <param name="type">検索する編集のタイプ</param>
+        /// <returns>個数</returns>
         public int GetEditPositionCount(EditType type)
         {
             if (type == EditType.All)
@@ -106,14 +122,10 @@
             return editList.Count(x => (x.editType & type) != 0);
         }
 
-
-
-
-
         /// <summary>
         /// 編集n番目のデータ番号を返す
         /// </summary>
-        /// <param name="index">n番目</param>
+        /// <param name="index">編集n番目</param>
         /// <param name="type">編集のタイプ</param>
         /// <returns>開始データ番号／-1=n番目が範囲外</returns>
         /// <remarks>編集位置は昇順にソートされている</remarks>
@@ -215,7 +227,12 @@
             return nextNumber;
         }
 
-
+        /// <summary>
+        /// 指定番号のデータは編集されているかを返す
+        /// </summary>
+        /// <param name="index">データ番号</param>
+        /// <param name="type">編集のタイプ</param>
+        /// <returns>true=編集されている</returns>
         public bool IsEditedLine(int index, EditType type)
         {
             bool status = (editList.Count(x => (x.dataNumber == index) && ((x.editType & type) != 0)) != 0);

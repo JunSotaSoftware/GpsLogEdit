@@ -1,10 +1,15 @@
-﻿using System.Text;
+﻿//
+// GPSデータファイルリーダー
+//
+// MIT License
+// Copyright(c) 2024-2025 Sota. 
+
+using System.Text;
 
 namespace GpsLogEdit
 {
-
     /// <summary>
-    /// GPXファイルリーダークラス
+    /// GPSファイルリーダークラス
     /// </summary>
     internal class GpsFileReader
     {
@@ -12,6 +17,12 @@ namespace GpsLogEdit
         private int fileNumber;
         private Form ownerForm;
 
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        /// <param name="fileName">読み込むファイル名</param>
+        /// <param name="fileNum">ファイル番号</param>
+        /// <param name="owner">エラーメッセージを表示するときのオーナーフォーム</param>
         public GpsFileReader(string fileName, int fileNum, Form owner)
         {
             this.fileNumber = fileNum;
@@ -20,8 +31,9 @@ namespace GpsLogEdit
         }
 
         /// <summary>
-        /// GPXファイル読み込み
+        /// GPSファイルを読み込む
         /// </summary>
+        /// <param name="positionList">位置情報のリスト</param>
         /// <returns>true=読み込み成功</returns>
         public bool Read(PositionList positionList)
         {
@@ -32,7 +44,7 @@ namespace GpsLogEdit
                 using StreamReader reader = new StreamReader(fileName, enc);
                 string gpxRaw = reader.ReadToEnd();
                 reader.Close();
-                string[] gpxLines = gpxRaw.Replace("\r\n", "\n").Split('\n');
+                string[] gpxLines = gpxRaw.Replace("\r\n", "\n").Split('\n');   // 改行で分ける
 
                 FileType type = FileType.Gpx;
                 if (fileName.EndsWith(".nmea", true, null))
@@ -52,7 +64,6 @@ namespace GpsLogEdit
             }
             return success;
         }
-
 
     }
 }

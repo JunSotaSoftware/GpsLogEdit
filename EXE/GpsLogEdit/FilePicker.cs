@@ -1,16 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿//
+// ファイル選択ダイアログ
+//
+// MIT License
+// Copyright(c) 2024-2025 Sota. 
 
 namespace GpsLogEdit
 {
     internal class FilePicker
     {
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
         public FilePicker() { }
 
+        /// <summary>
+        /// GPSデータを開くダイアログを表示
+        /// </summary>
+        /// <returns>開くファイル名のリスト</returns>
         public List<string?> ShowOpenFileDialog()
         {
             List<string?> fileList = new List<string?>();
@@ -39,7 +45,11 @@ namespace GpsLogEdit
             return fileList;
         }
 
-
+        /// <summary>
+        /// 開くダイアログで最初に表示するフォルダ名を保存する
+        /// </summary>
+        /// <param name="file">開くファイル名</param>
+        /// <param name="filterIndex">ダイアログのフィルタのインデックス</param>
         private void SaveDefaultOpenDirectory(string file, int filterIndex)
         {
             string? folder = Path.GetDirectoryName(file);
@@ -51,8 +61,12 @@ namespace GpsLogEdit
             Properties.Settings.Default.Save();
         }
 
-
-
+        /// <summary>
+        /// GPSデータを保存するダイアログを表示
+        /// </summary>
+        /// <param name="type">保存するデータのタイプ</param>
+        /// <param name="defaultName">ファイル名のデフォルト値</param>
+        /// <returns>保存するファイルのファイル名</returns>
         public string ShowSaveFileDialog(FileType type, string defaultName)
         {
             string result = "";
@@ -91,7 +105,11 @@ namespace GpsLogEdit
             return result;
         }
 
-
+        /// <summary>
+        /// 保存ダイアログで最初に表示するフォルダ名を保存する
+        /// </summary>
+        /// <param name="file">保存するファイル名</param>
+        /// <param name="filterIndex">ダイアログのフィルタのインデックス</param>
         private void SaveDefaultSaveDirectory(string file, int filterIndex)
         {
             string? folder = Path.GetDirectoryName(file);
@@ -103,8 +121,10 @@ namespace GpsLogEdit
             Properties.Settings.Default.Save();
         }
 
-
-
+        /// <summary>
+        /// プロジェクトを開くダイアログを表示
+        /// </summary>
+        /// <returns>開くファイル名</returns>
         public string ShowOpenProjectDialog()
         {
             string result = "";
@@ -129,7 +149,11 @@ namespace GpsLogEdit
             return result;
         }
 
-
+        /// <summary>
+        /// プロジェクトを保存するダイアログを表示
+        /// </summary>
+        /// <param name="projectFile">デフォルトのファイル名</param>
+        /// <returns>保存するファイル名</returns>
         public string ShowSaveProjectDialog(string projectFile)
         {
             string result = "";
@@ -158,7 +182,10 @@ namespace GpsLogEdit
             return result;
         }
 
-
+        /// <summary>
+        /// プロジェクトを開く/保存ダイアログで最初に表示するフォルダ名を保存する
+        /// </summary>
+        /// <param name="file">ファイル名</param>
         private void SaveDefaultProjectDirectory(string file)
         {
             string? folder = Path.GetDirectoryName(file);
@@ -168,7 +195,6 @@ namespace GpsLogEdit
             }
             Properties.Settings.Default.Save();
         }
-
 
     }
 }

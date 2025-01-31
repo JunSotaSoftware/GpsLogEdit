@@ -1,11 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿//
+// GPX/KMLファイルに書き込むデータの管理
+//
+// MIT License
+// Copyright(c) 2024-2025 Sota. 
 
 namespace GpsLogEdit
 {
+    /// <summary>
+    /// GPX/KMLに書き込むデータ管理クラス
+    /// </summary>
     public class DefaultDataInfo
     {
         private string dataName;
@@ -13,6 +16,9 @@ namespace GpsLogEdit
         private List<Color> colorList;
         private Color[] defaultColor = { Color.Red, Color.Blue, Color.Green, Color.HotPink, Color.Cyan };
 
+        /// <summary>
+        /// インストラクタ
+        /// </summary>
         public DefaultDataInfo()
         {
             dataName = "";
@@ -20,6 +26,10 @@ namespace GpsLogEdit
             colorList = new List<Color>();
         }
 
+        /// <summary>
+        /// データ名をセット
+        /// </summary>
+        /// <param name="name">データ名</param>
         public void SetName(string? name)
         {
             if (name != null)
@@ -28,11 +38,19 @@ namespace GpsLogEdit
             }
         }
 
+        /// <summary>
+        /// データ名を返す
+        /// </summary>
+        /// <returns>データ名</returns>
         public string GetName()
         {
             return dataName;
         }
 
+        /// <summary>
+        /// 分割されたトラックを複数ファイルに分けるかどうかをセット
+        /// </summary>
+        /// <param name="separate">true=複数ファイルに分ける</param>
         public void SetSeparate(bool separate)
         {
             separateFile = separate;
@@ -40,16 +58,29 @@ namespace GpsLogEdit
             Properties.Settings.Default.Save();
         }
 
+        /// <summary>
+        /// 分割されたトラックを複数ファイルに分けるかどうかを返す
+        /// </summary>
+        /// <returns>true=複数ファイルに分ける</returns>
         public bool GetSeparate()
         {
             return separateFile;
         }
 
+        /// <summary>
+        /// トラックの表示色を追加
+        /// </summary>
+        /// <param name="color">色</param>
         public void AddColor(Color color)
         {
             colorList.Add(color);
         }
 
+        /// <summary>
+        /// 指定番号のトラックの表示色をセット
+        /// </summary>
+        /// <param name="index">トラック番号</param>
+        /// <param name="color">色</param>
         public void SetColor(int index, Color color)
         {
             if (index < colorList.Count)
@@ -66,6 +97,11 @@ namespace GpsLogEdit
             }
         }
 
+        /// <summary>
+        /// 指定番号のトラック表示色を返す
+        /// </summary>
+        /// <param name="index">番号</param>
+        /// <returns>色</returns>
         public Color GetColor(int index)
         {
             Color color;
@@ -85,11 +121,18 @@ namespace GpsLogEdit
             return color;
         }
 
+        /// <summary>
+        /// 色が指定されているトラックの数を返す
+        /// </summary>
+        /// <returns>数</returns>
         public int GetColorCount()
         {
             return colorList.Count;
         }
 
+        /// <summary>
+        /// GPX/KMLに書き込むデータをクリア
+        /// </summary>
         public void Clear()
         {
             dataName = "";

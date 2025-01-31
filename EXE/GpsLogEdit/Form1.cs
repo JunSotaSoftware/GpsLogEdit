@@ -1,11 +1,15 @@
-using System;
-using System.Collections.Generic;
+//
+// メイン画面
+//
+// MIT License
+// Copyright(c) 2024-2025 Sota. 
+
+//#define DEBUG_CONSOLE
+#define HELP_CONTEXT_NOT_EXIST
+
 using System.Diagnostics;
 using System.Globalization;
 using System.Runtime.InteropServices;
-using System.Xml;
-using static SkiaSharp.HarfBuzz.SKShaper;
-
 
 namespace GpsLogEdit
 {
@@ -14,8 +18,10 @@ namespace GpsLogEdit
     /// </summary>
     public partial class Form1 : Form
     {
-        //[DllImport("kernel32.dll")]
-        //private static extern bool AllocConsole();
+#if DEBUG_CONSOLE
+        [DllImport("kernel32.dll")]
+        private static extern bool AllocConsole();
+#endif
 
         private GpsMap gpsMap;
         private EditManager editManager;
@@ -32,8 +38,9 @@ namespace GpsLogEdit
         /// </summary>
         public Form1()
         {
-            //AllocConsole();
-
+#if DEBUG_CONSOLE
+            AllocConsole();
+#endif
             InitializeComponent();
             bool dms = Properties.Settings.Default.Dms;
             dEGToolStripMenuItem.Checked = !dms;
@@ -49,6 +56,10 @@ namespace GpsLogEdit
             modified = false;
             projectFile = "";
             ClearMarkPos();
+
+#if HELP_CONTEXT_NOT_EXIST
+            HelpContextToolStripMenuItem.Enabled = false;
+#endif
 
             positionList = new PositionList();
             editManager = new EditManager();
@@ -77,7 +88,11 @@ namespace GpsLogEdit
             }
         }
 
-
+        /// <summary>
+        /// フォームのロード時の処理
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void form1_Load(object sender, EventArgs e)
         {
             // 設定がなかったら古いバージョンの設定を持ってくる
@@ -100,6 +115,10 @@ namespace GpsLogEdit
             }
         }
 
+        /// <summary>
+        /// コマンドラインで指定された何らかのファイルを開く
+        /// </summary>
+        /// <param name="cmds">コマンドライン引数</param>
         private void OpenSomething(string[] cmds)
         {
             if (cmds[1].EndsWith(".gedpf", true, null))
@@ -115,7 +134,11 @@ namespace GpsLogEdit
             }
         }
 
-
+        /// <summary>
+        /// GPSファイルを開くメニューの処理
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void menuOpenFile_Click(object sender, EventArgs e)
         {
             if (modified)
@@ -137,7 +160,11 @@ namespace GpsLogEdit
             }
         }
 
-
+        /// <summary>
+        /// GPSファイルを追加で開くメニューの処理
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void menuAppendFile_Click(object sender, EventArgs e)
         {
             if (modified)
@@ -156,6 +183,10 @@ namespace GpsLogEdit
             }
         }
 
+        /// <summary>
+        /// GPSファイル読み込みの共通処理
+        /// </summary>
+        /// <param name="fileList">読み込むファイル一覧</param>
         private void ReadProcCommon(List<string?> fileList)
         {
             editManager.Clear();
@@ -184,6 +215,9 @@ namespace GpsLogEdit
             }
         }
 
+        /// <summary>
+        /// GPSファイル読み込みの最終処理
+        /// </summary>
         private void FileReadPostProcess()
         {
             if (positionList.GetPositionCount() > 0)
@@ -200,7 +234,6 @@ namespace GpsLogEdit
                 gpsMap.ShowGpsCurrentPoint(-1);
             }
         }
-
 
         /// <summary>
         /// GPSデータをリストビューに登録
@@ -245,14 +278,19 @@ namespace GpsLogEdit
             }
         }
 
+        /// <summary>
+        /// VirtualモードのListViewが項目を表示するときに呼ばれる
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void listViewGpxLog_RetrieveVirtualItem(object sender, RetrieveVirtualItemEventArgs e)
         {
             e.Item = listViewItemList[e.ItemIndex];
         }
 
-
-
-
+        /// <summary>
+        /// フォームのタイトルバーにファイル名などを表示
+        /// </summary>
         private void ShowFileListToTitleBar()
         {
             string title = "GpsLogEdit";
@@ -268,9 +306,11 @@ namespace GpsLogEdit
             this.Text = title;
         }
 
-
-
-
+        /// <summary>
+        /// 読み込んでいるファイル一覧を表示メニューの処理
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void menuShowReadFile_Click(object sender, EventArgs e)
         {
             using (FormShowReadFileList viewer = new FormShowReadFileList())
@@ -280,9 +320,8 @@ namespace GpsLogEdit
             }
         }
 
-
         /// <summary>
-        /// GPXファイル保存メニューが選ばれたときの処理
+        /// GPXファイル保存メニューの処理
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -291,25 +330,36 @@ namespace GpsLogEdit
             SaveProcCommon(FileType.Gpx);
         }
 
-
+        /// <summary>
+        /// KMLファイル保存メニューの処理
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void menuSaveKmlFile_Click(object sender, EventArgs e)
         {
             SaveProcCommon(FileType.Kml);
         }
 
-
+        /// <summary>
+        /// GPSデータ保存の共通処理
+        /// </summary>
+        /// <param name="type">ファイルタイプ</param>
         private void SaveProcCommon(FileType type)
         {
             if ((positionList != null) && (positionList.GetPositionCount() > 0))
             {
                 GpsFileWriter writer = new GpsFileWriter(editManager, positionList, defaultDataInfo, this);
+
+                // 保存の確認を行う
                 SaveNotifyInfo info = writer.Notify(type);
                 if (info.GetResult() == DialogResult.OK)
                 {
+                    // ファイル名を入力
                     FilePicker picker = new FilePicker();
                     string file = picker.ShowSaveFileDialog(type, info.GetName());
                     if (file.Length > 0)
                     {
+                        // 保存実行
                         if (writer.WriteToFile(file, type, info))
                         {
                             modified = false;
@@ -320,7 +370,11 @@ namespace GpsLogEdit
             }
         }
 
-
+        /// <summary>
+        /// DEG座標で表示メニューの処理
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void menuSelectDeg_Click(object sender, EventArgs e)
         {
             dEGToolStripMenuItem.Checked = true;
@@ -330,6 +384,11 @@ namespace GpsLogEdit
             UpdateCoordinateSystem(false);
         }
 
+        /// <summary>
+        /// DMS座標で表示メニューの処理
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void menuSelectDms_Click(object sender, EventArgs e)
         {
             dEGToolStripMenuItem.Checked = false;
@@ -338,7 +397,6 @@ namespace GpsLogEdit
             Properties.Settings.Default.Save();
             UpdateCoordinateSystem(true);
         }
-
 
         /// <summary>
         /// 座標系を切り替える
@@ -368,8 +426,6 @@ namespace GpsLogEdit
             }
         }
 
-
-
         /// <summary>
         /// Exitメニューの処理
         /// </summary>
@@ -382,6 +438,11 @@ namespace GpsLogEdit
             this.Close();
         }
 
+        /// <summary>
+        /// フォームが閉じられる前に呼ばれる
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (modified)
@@ -448,7 +509,6 @@ namespace GpsLogEdit
             }
         }
 
-
         /// <summary>
         /// Helpメニューの処理
         /// </summary>
@@ -483,8 +543,11 @@ namespace GpsLogEdit
             listGpxLog.Select();
         }
 
-
-
+        /// <summary>
+        /// 削除/解除ボタンの処理
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void buttonDeleteGpxFile_Click(object sender, EventArgs e)
         {
             DoEdit(EditType.Delete);
@@ -492,17 +555,26 @@ namespace GpsLogEdit
             listGpxLog.Select();
         }
 
-
+        /// <summary>
+        /// 編集を行う
+        /// </summary>
+        /// <param name="type">行われた編集のタイプ</param>
         private void DoEdit(EditType type)
         {
             if ((positionList != null) && (positionList.GetPositionCount() > 0))
             {
+                // ListViewで選ばれている項目からデータ番号のリストを作成
                 ListView.SelectedIndexCollection indexes = listGpxLog.SelectedIndices;
                 List<int> intIndexes = indexes.Cast<int>().ToList();
                 EditProcCommon(intIndexes, type);
             }
         }
 
+        /// <summary>
+        /// 編集の共通処理
+        /// </summary>
+        /// <param name="indexes">編集を行うデータ番号のリスト</param>
+        /// <param name="type">編集のタイプ</param>
         private void EditProcCommon(List<int>? indexes, EditType type)
         {
             if (indexes != null)
@@ -537,10 +609,8 @@ namespace GpsLogEdit
             }
         }
 
-
-
         /// <summary>
-        /// 前の分割位置へ移動ボタンの処理
+        /// 前の編集位置へ移動ボタンの処理
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -558,7 +628,7 @@ namespace GpsLogEdit
         }
 
         /// <summary>
-        /// 次の分割位置へ移動ボタンの処理
+        /// 次の編集位置へ移動ボタンの処理
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -575,14 +645,13 @@ namespace GpsLogEdit
             }
         }
 
-
         /// <summary>
         /// リストビューの項目が選ばれたときの処理
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         /// <remarks>
-        /// VirtualListViewでは以下の操作を行ったときにこのメソッドが呼ばれる
+        /// VirtualモードのListViewでは以下の操作を行ったときにこのメソッドが呼ばれる
         /// ・カーソルを移動したとき
         /// ・マウスクリックで項目を選択したとき
         /// ・CTRL+マウスクリックで項目を複数指定したとき
@@ -597,7 +666,7 @@ namespace GpsLogEdit
         /// </summary>
         /// <param name="sender"></param>
         /// <remarks>
-        /// VirtualListViewでは以下の操作を行ったときにこのメソッドが呼ばれる
+        /// VirtualモードのListViewでは以下の操作を行ったときにこのメソッドが呼ばれる
         /// ・SHIFTキー＋カーソルキーで項目を範囲選択したとき
         /// ・SHIFTキー＋マウスクリックで項目を範囲選択したとき
         /// </remarks>
@@ -607,6 +676,9 @@ namespace GpsLogEdit
             SelectChangeCommon();
         }
 
+        /// <summary>
+        /// リストビュー項目が選ばれたとkの共通処理
+        /// </summary>
         private void SelectChangeCommon()
         {
             if ((positionList != null) && (positionList.GetPositionCount() > 0))
@@ -635,7 +707,11 @@ namespace GpsLogEdit
             }
         }
 
-
+        /// <summary>
+        /// リストビューの右クリックメニューの処理
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void listViewGpxLog_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
@@ -681,7 +757,6 @@ namespace GpsLogEdit
                 listGpxLog.ContextMenuStrip = null;
             }
         }
-
 
         /// <summary>
         /// リストビューの「分割／解除」コンテキストメニューが選ばれたときの処理
@@ -763,6 +838,11 @@ namespace GpsLogEdit
             listGpxLog.Select();
         }
 
+        /// <summary>
+        /// 新規作成メニューの処理
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void menuCreateNew_Click(object sender, EventArgs e)
         {
             if (modified)
@@ -794,6 +874,11 @@ namespace GpsLogEdit
             saveToKmlToolStripMenuItem.Enabled = false;
         }
 
+        /// <summary>
+        /// プロジェクトファイルを開くメニューの処理
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void menuOpenProject_Click(object sender, EventArgs e)
         {
             if (modified)
@@ -809,6 +894,10 @@ namespace GpsLogEdit
             OpenProjectProcCommon(file);
         }
 
+        /// <summary>
+        /// プロジェクトファイルを開く共通処理
+        /// </summary>
+        /// <param name="file">ファイル名</param>
         private void OpenProjectProcCommon(string file)
         {
             if (file.Length > 0)
@@ -851,6 +940,11 @@ namespace GpsLogEdit
 
         }
 
+        /// <summary>
+        /// プロジェクトファイルに保存メニューの処理
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void menuSaveProject_Click(object sender, EventArgs e)
         {
             FilePicker picker = new FilePicker();
@@ -866,6 +960,11 @@ namespace GpsLogEdit
             }
         }
 
+        /// <summary>
+        /// この位置をマークボタンの処理
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void buttomMark_Click(object sender, EventArgs e)
         {
             if ((positionList != null) && (positionList.GetPositionCount() > 0))
@@ -902,6 +1001,11 @@ namespace GpsLogEdit
             listGpxLog.Select();
         }
 
+        /// <summary>
+        /// マーク位置まで選択ボタンの処理
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void buttonSelectToMark_Click(object sender, EventArgs e)
         {
             ListView.SelectedIndexCollection indexes = listGpxLog.SelectedIndices;
@@ -945,9 +1049,11 @@ namespace GpsLogEdit
             listGpxLog.SelectedIndexChanged += listViewGpxLog_SelectedIndexChanged;
 
             listGpxLog.Select();
-
         }
 
+        /// <summary>
+        /// マークのメッセージを表示
+        /// </summary>
         private void ShowMarkMessage()
         {
             if (markPos == -1)
@@ -962,11 +1068,19 @@ namespace GpsLogEdit
             }
         }
 
+        /// <summary>
+        /// マークを示すリンクがクリックされたときの処理
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void linkLabelMarkPos_Clicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             SelectGpxLog(markPos);
         }
 
+        /// <summary>
+        /// マークをクリア
+        /// </summary>
         private void ClearMarkPos()
         {
             markPos = -1;

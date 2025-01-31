@@ -58,8 +58,8 @@
             dMSToolStripMenuItem = new ToolStripMenuItem();
             オプションOToolStripMenuItem = new ToolStripMenuItem();
             saveWindowPosToolStripMenuItem = new ToolStripMenuItem();
-            ヘルプHToolStripMenuItem = new ToolStripMenuItem();
-            目次CToolStripMenuItem = new ToolStripMenuItem();
+            HelpToolStripMenuItem = new ToolStripMenuItem();
+            HelpContextToolStripMenuItem = new ToolStripMenuItem();
             toolStripSeparator1 = new ToolStripSeparator();
             gpxEditについてAToolStripMenuItem = new ToolStripMenuItem();
             tableLayoutPanel2 = new TableLayoutPanel();
@@ -75,9 +75,9 @@
             menuStrip1.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
             SuspendLayout();
-            //
+            // 
             // listGpxLog
-            //
+            // 
             listGpxLog.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             listGpxLog.Columns.AddRange(new ColumnHeader[] { columnHeader1, columnHeader2, columnHeader3, columnHeader4, columnHeader5, columnHeader6, columnHeader7, columnHeader8 });
             tableLayoutPanel2.SetColumnSpan(listGpxLog, 9);
@@ -94,210 +94,210 @@
             listGpxLog.SelectedIndexChanged += listViewGpxLog_SelectedIndexChanged;
             listGpxLog.VirtualItemsSelectionRangeChanged += listViewGpxLog_VirtualItemsSelectionRangeChanged;
             listGpxLog.MouseClick += listViewGpxLog_MouseClick;
-            //
+            // 
             // columnHeader1
-            //
+            // 
             columnHeader1.Text = "No.";
             columnHeader1.Width = 50;
-            //
+            // 
             // columnHeader2
-            //
+            // 
             columnHeader2.Text = "緯度";
             columnHeader2.Width = 120;
-            //
+            // 
             // columnHeader3
-            //
+            // 
             columnHeader3.Text = "経度";
             columnHeader3.Width = 120;
-            //
+            // 
             // columnHeader4
-            //
+            // 
             columnHeader4.Text = "標高";
             columnHeader4.Width = 90;
-            //
+            // 
             // columnHeader5
-            //
+            // 
             columnHeader5.Text = "時刻";
             columnHeader5.Width = 160;
-            //
+            // 
             // columnHeader6
-            //
+            // 
             columnHeader6.Text = "スピード(km/h)";
             columnHeader6.Width = 100;
-            //
+            // 
             // columnHeader7
-            //
+            // 
             columnHeader7.Text = "ファイル＃";
-            //
+            // 
             // columnHeader8
-            //
+            // 
             columnHeader8.Text = "状態";
             columnHeader8.Width = 100;
-            //
+            // 
             // menuStrip1
-            //
-            menuStrip1.Items.AddRange(new ToolStripItem[] { ファイルFToolStripMenuItem, 表示VToolStripMenuItem, オプションOToolStripMenuItem, ヘルプHToolStripMenuItem });
+            // 
+            menuStrip1.Items.AddRange(new ToolStripItem[] { ファイルFToolStripMenuItem, 表示VToolStripMenuItem, オプションOToolStripMenuItem, HelpToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(864, 24);
             menuStrip1.TabIndex = 4;
             menuStrip1.Text = "menuStrip1";
-            //
+            // 
             // ファイルFToolStripMenuItem
-            //
+            // 
             ファイルFToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { 新規作成NToolStripMenuItem, 開くOToolStripMenuItem, appendToolStripMenuItem, 読み込んでいるファイル一覧を表示LToolStripMenuItem, toolStripSeparator4, プロジェクトファイルを開くPToolStripMenuItem, プロジェクトファイルを保存SToolStripMenuItem, toolStripSeparator3, saveToGpxToolStripMenuItem, saveToKmlToolStripMenuItem, toolStripSeparator2, 終了XToolStripMenuItem });
             ファイルFToolStripMenuItem.Name = "ファイルFToolStripMenuItem";
             ファイルFToolStripMenuItem.Size = new Size(70, 20);
             ファイルFToolStripMenuItem.Text = "ファイル(&F)";
-            //
+            // 
             // 新規作成NToolStripMenuItem
-            //
+            // 
             新規作成NToolStripMenuItem.Name = "新規作成NToolStripMenuItem";
             新規作成NToolStripMenuItem.Size = new Size(296, 22);
             新規作成NToolStripMenuItem.Text = "新規作成(&N)";
             新規作成NToolStripMenuItem.Click += menuCreateNew_Click;
-            //
+            // 
             // 開くOToolStripMenuItem
-            //
+            // 
             開くOToolStripMenuItem.Name = "開くOToolStripMenuItem";
             開くOToolStripMenuItem.Size = new Size(296, 22);
             開くOToolStripMenuItem.Text = "データファイルを開く(&O)...";
             開くOToolStripMenuItem.Click += menuOpenFile_Click;
-            //
+            // 
             // appendToolStripMenuItem
-            //
+            // 
             appendToolStripMenuItem.Name = "appendToolStripMenuItem";
             appendToolStripMenuItem.Size = new Size(296, 22);
             appendToolStripMenuItem.Text = "データファイルを追加で開く(&A)...";
             appendToolStripMenuItem.Click += menuAppendFile_Click;
-            //
+            // 
             // 読み込んでいるファイル一覧を表示LToolStripMenuItem
-            //
+            // 
             読み込んでいるファイル一覧を表示LToolStripMenuItem.Name = "読み込んでいるファイル一覧を表示LToolStripMenuItem";
             読み込んでいるファイル一覧を表示LToolStripMenuItem.Size = new Size(296, 22);
             読み込んでいるファイル一覧を表示LToolStripMenuItem.Text = "読み込んでいるデータファイル一覧を表示(&L)...";
             読み込んでいるファイル一覧を表示LToolStripMenuItem.Click += menuShowReadFile_Click;
-            //
+            // 
             // toolStripSeparator4
-            //
+            // 
             toolStripSeparator4.Name = "toolStripSeparator4";
             toolStripSeparator4.Size = new Size(293, 6);
-            //
+            // 
             // プロジェクトファイルを開くPToolStripMenuItem
-            //
+            // 
             プロジェクトファイルを開くPToolStripMenuItem.Name = "プロジェクトファイルを開くPToolStripMenuItem";
             プロジェクトファイルを開くPToolStripMenuItem.Size = new Size(296, 22);
             プロジェクトファイルを開くPToolStripMenuItem.Text = "プロジェクトファイルを開く(&P)...";
             プロジェクトファイルを開くPToolStripMenuItem.Click += menuOpenProject_Click;
-            //
+            // 
             // プロジェクトファイルを保存SToolStripMenuItem
-            //
+            // 
             プロジェクトファイルを保存SToolStripMenuItem.Name = "プロジェクトファイルを保存SToolStripMenuItem";
             プロジェクトファイルを保存SToolStripMenuItem.Size = new Size(296, 22);
             プロジェクトファイルを保存SToolStripMenuItem.Text = "プロジェクトファイルに保存(&S)...";
             プロジェクトファイルを保存SToolStripMenuItem.Click += menuSaveProject_Click;
-            //
+            // 
             // toolStripSeparator3
-            //
+            // 
             toolStripSeparator3.Name = "toolStripSeparator3";
             toolStripSeparator3.Size = new Size(293, 6);
-            //
+            // 
             // saveToGpxToolStripMenuItem
-            //
+            // 
             saveToGpxToolStripMenuItem.Name = "saveToGpxToolStripMenuItem";
             saveToGpxToolStripMenuItem.Size = new Size(296, 22);
             saveToGpxToolStripMenuItem.Text = "GPXファイルに保存(&G)...";
             saveToGpxToolStripMenuItem.Click += menuSaveGpxFile_Click;
-            //
+            // 
             // saveToKmlToolStripMenuItem
-            //
+            // 
             saveToKmlToolStripMenuItem.Name = "saveToKmlToolStripMenuItem";
             saveToKmlToolStripMenuItem.Size = new Size(296, 22);
             saveToKmlToolStripMenuItem.Text = "KMLファイルに保存(&K)...";
             saveToKmlToolStripMenuItem.Click += menuSaveKmlFile_Click;
-            //
+            // 
             // toolStripSeparator2
-            //
+            // 
             toolStripSeparator2.Name = "toolStripSeparator2";
             toolStripSeparator2.Size = new Size(293, 6);
-            //
+            // 
             // 終了XToolStripMenuItem
-            //
+            // 
             終了XToolStripMenuItem.Name = "終了XToolStripMenuItem";
             終了XToolStripMenuItem.Size = new Size(296, 22);
             終了XToolStripMenuItem.Text = "終了(&X)";
             終了XToolStripMenuItem.Click += menuExit_Click;
-            //
+            // 
             // 表示VToolStripMenuItem
-            //
+            // 
             表示VToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { 座標表示形式DToolStripMenuItem });
             表示VToolStripMenuItem.Name = "表示VToolStripMenuItem";
             表示VToolStripMenuItem.Size = new Size(61, 20);
             表示VToolStripMenuItem.Text = "表示(&V)";
-            //
+            // 
             // 座標表示形式DToolStripMenuItem
-            //
+            // 
             座標表示形式DToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { dEGToolStripMenuItem, dMSToolStripMenuItem });
             座標表示形式DToolStripMenuItem.Name = "座標表示形式DToolStripMenuItem";
             座標表示形式DToolStripMenuItem.Size = new Size(165, 22);
             座標表示形式DToolStripMenuItem.Text = "座標表示形式(&D)";
-            //
+            // 
             // dEGToolStripMenuItem
-            //
+            // 
             dEGToolStripMenuItem.Name = "dEGToolStripMenuItem";
             dEGToolStripMenuItem.Size = new Size(121, 22);
             dEGToolStripMenuItem.Text = "DEG(&E)";
             dEGToolStripMenuItem.Click += menuSelectDeg_Click;
-            //
+            // 
             // dMSToolStripMenuItem
-            //
+            // 
             dMSToolStripMenuItem.Name = "dMSToolStripMenuItem";
             dMSToolStripMenuItem.Size = new Size(121, 22);
             dMSToolStripMenuItem.Text = "DMS(&M)";
             dMSToolStripMenuItem.Click += menuSelectDms_Click;
-            //
+            // 
             // オプションOToolStripMenuItem
-            //
+            // 
             オプションOToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { saveWindowPosToolStripMenuItem });
             オプションOToolStripMenuItem.Name = "オプションOToolStripMenuItem";
             オプションOToolStripMenuItem.Size = new Size(61, 20);
             オプションOToolStripMenuItem.Text = "設定(&S)";
-            //
+            // 
             // saveWindowPosToolStripMenuItem
-            //
+            // 
             saveWindowPosToolStripMenuItem.CheckOnClick = true;
             saveWindowPosToolStripMenuItem.Name = "saveWindowPosToolStripMenuItem";
             saveWindowPosToolStripMenuItem.Size = new Size(221, 22);
             saveWindowPosToolStripMenuItem.Text = "ウインドウの位置を保存する(&P)";
-            //
-            // ヘルプHToolStripMenuItem
-            //
-            ヘルプHToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { 目次CToolStripMenuItem, toolStripSeparator1, gpxEditについてAToolStripMenuItem });
-            ヘルプHToolStripMenuItem.Name = "ヘルプHToolStripMenuItem";
-            ヘルプHToolStripMenuItem.Size = new Size(67, 20);
-            ヘルプHToolStripMenuItem.Text = "ヘルプ(&H)";
-            //
-            // 目次CToolStripMenuItem
-            //
-            目次CToolStripMenuItem.Name = "目次CToolStripMenuItem";
-            目次CToolStripMenuItem.Size = new Size(186, 22);
-            目次CToolStripMenuItem.Text = "目次(&C)";
-            目次CToolStripMenuItem.Click += menuHelpContext_Click;
-            //
+            // 
+            // HelpToolStripMenuItem
+            // 
+            HelpToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { HelpContextToolStripMenuItem, toolStripSeparator1, gpxEditについてAToolStripMenuItem });
+            HelpToolStripMenuItem.Name = "HelpToolStripMenuItem";
+            HelpToolStripMenuItem.Size = new Size(67, 20);
+            HelpToolStripMenuItem.Text = "ヘルプ(&H)";
+            // 
+            // HelpContextToolStripMenuItem
+            // 
+            HelpContextToolStripMenuItem.Name = "HelpContextToolStripMenuItem";
+            HelpContextToolStripMenuItem.Size = new Size(206, 22);
+            HelpContextToolStripMenuItem.Text = "目次(&C)";
+            HelpContextToolStripMenuItem.Click += menuHelpContext_Click;
+            // 
             // toolStripSeparator1
-            //
+            // 
             toolStripSeparator1.Name = "toolStripSeparator1";
-            toolStripSeparator1.Size = new Size(183, 6);
-            //
+            toolStripSeparator1.Size = new Size(203, 6);
+            // 
             // gpxEditについてAToolStripMenuItem
-            //
+            // 
             gpxEditについてAToolStripMenuItem.Name = "gpxEditについてAToolStripMenuItem";
-            gpxEditについてAToolStripMenuItem.Size = new Size(186, 22);
+            gpxEditについてAToolStripMenuItem.Size = new Size(206, 22);
             gpxEditについてAToolStripMenuItem.Text = "GpsLogEditについて(&A)...";
             gpxEditについてAToolStripMenuItem.Click += menuAbout_Click;
-            //
+            // 
             // tableLayoutPanel2
-            //
+            // 
             tableLayoutPanel2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             tableLayoutPanel2.ColumnCount = 9;
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 150F));
@@ -327,9 +327,9 @@
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 51.3513527F));
             tableLayoutPanel2.Size = new Size(864, 648);
             tableLayoutPanel2.TabIndex = 3;
-            //
+            // 
             // mapControl1
-            //
+            // 
             mapControl1.AutoSize = true;
             mapControl1.BackColor = Color.White;
             mapControl1.BorderStyle = BorderStyle.FixedSingle;
@@ -341,9 +341,9 @@
             mapControl1.Size = new Size(824, 293);
             mapControl1.TabIndex = 9;
             mapControl1.UpdateInterval = 16;
-            //
+            // 
             // buttonPrevSplitPos
-            //
+            // 
             buttonPrevSplitPos.Anchor = AnchorStyles.Right;
             buttonPrevSplitPos.Location = new Point(290, 306);
             buttonPrevSplitPos.Margin = new Padding(3, 8, 3, 3);
@@ -353,9 +353,9 @@
             buttonPrevSplitPos.Text = "▲";
             buttonPrevSplitPos.UseVisualStyleBackColor = true;
             buttonPrevSplitPos.Click += buttonPrevSplitPos_Click;
-            //
+            // 
             // labelMoveSplitPos
-            //
+            // 
             labelMoveSplitPos.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             labelMoveSplitPos.AutoSize = true;
             labelMoveSplitPos.Location = new Point(319, 310);
@@ -365,9 +365,9 @@
             labelMoveSplitPos.TabIndex = 4;
             labelMoveSplitPos.Text = "編集位置へ移動";
             labelMoveSplitPos.TextAlign = ContentAlignment.MiddleCenter;
-            //
+            // 
             // buttonNextSplitPos
-            //
+            // 
             buttonNextSplitPos.Anchor = AnchorStyles.Left;
             buttonNextSplitPos.Location = new Point(414, 306);
             buttonNextSplitPos.Margin = new Padding(3, 8, 3, 3);
@@ -377,9 +377,9 @@
             buttonNextSplitPos.Text = "▼";
             buttonNextSplitPos.UseVisualStyleBackColor = true;
             buttonNextSplitPos.Click += buttonNextSplitPos_Click;
-            //
+            // 
             // buttonSplitGpxFile
-            //
+            // 
             buttonSplitGpxFile.AutoSize = true;
             buttonSplitGpxFile.Location = new Point(20, 303);
             buttonSplitGpxFile.Margin = new Padding(20, 8, 3, 3);
@@ -389,9 +389,9 @@
             buttonSplitGpxFile.Text = "ここで分割／解除";
             buttonSplitGpxFile.UseVisualStyleBackColor = true;
             buttonSplitGpxFile.Click += buttonSplitGpxFile_Click;
-            //
+            // 
             // buttonDeleteGpxFile
-            //
+            // 
             buttonDeleteGpxFile.AutoSize = true;
             buttonDeleteGpxFile.Location = new Point(153, 303);
             buttonDeleteGpxFile.Margin = new Padding(3, 8, 3, 3);
@@ -401,9 +401,9 @@
             buttonDeleteGpxFile.Text = "範囲を削除／解除";
             buttonDeleteGpxFile.UseVisualStyleBackColor = true;
             buttonDeleteGpxFile.Click += buttonDeleteGpxFile_Click;
-            //
+            // 
             // buttonMark
-            //
+            // 
             buttonMark.AutoSize = true;
             buttonMark.Location = new Point(464, 303);
             buttonMark.Margin = new Padding(3, 8, 3, 3);
@@ -413,9 +413,9 @@
             buttonMark.Text = "この位置をマーク";
             buttonMark.UseVisualStyleBackColor = true;
             buttonMark.Click += buttomMark_Click;
-            //
+            // 
             // buttonSelectToMark
-            //
+            // 
             buttonSelectToMark.AutoSize = true;
             buttonSelectToMark.Location = new Point(675, 303);
             buttonSelectToMark.Margin = new Padding(3, 8, 3, 3);
@@ -425,9 +425,9 @@
             buttonSelectToMark.Text = "マーク位置まで選択";
             buttonSelectToMark.UseVisualStyleBackColor = true;
             buttonSelectToMark.Click += buttonSelectToMark_Click;
-            //
+            // 
             // linkLabelMarkPos
-            //
+            // 
             linkLabelMarkPos.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             linkLabelMarkPos.AutoSize = true;
             linkLabelMarkPos.Location = new Point(562, 310);
@@ -438,9 +438,9 @@
             linkLabelMarkPos.TabStop = true;
             linkLabelMarkPos.Text = "linkLabel1";
             linkLabelMarkPos.LinkClicked += linkLabelMarkPos_Clicked;
-            //
+            // 
             // Form1
-            //
+            // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(864, 675);
@@ -472,11 +472,11 @@
         private MenuStrip menuStrip1;
         private ToolStripMenuItem ファイルFToolStripMenuItem;
         private ToolStripMenuItem オプションOToolStripMenuItem;
-        private ToolStripMenuItem ヘルプHToolStripMenuItem;
+        private ToolStripMenuItem HelpToolStripMenuItem;
         private ToolStripMenuItem gpxEditについてAToolStripMenuItem;
         private ToolStripMenuItem 終了XToolStripMenuItem;
         private TableLayoutPanel tableLayoutPanel2;
-        private ToolStripMenuItem 目次CToolStripMenuItem;
+        private ToolStripMenuItem HelpContextToolStripMenuItem;
         private ToolStripSeparator toolStripSeparator1;
         private Button buttonSplitGpxFile;
         private ColumnHeader columnHeader7;

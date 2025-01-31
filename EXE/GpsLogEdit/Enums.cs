@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿//
+// 各種ENUM
+//
+// MIT License
+// Copyright(c) 2024-2025 Sota. 
 
 namespace GpsLogEdit
 {
@@ -18,7 +18,6 @@ namespace GpsLogEdit
         EW,
         ElevationUnit
     }
-
 
     public enum FileType
     {

@@ -1,13 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿//
+// DEG座標をDMS座標に変換
+//
+// MIT License
+// Copyright(c) 2024-2025 Sota. 
 
 namespace GpsLogEdit
 {
+    /// <summary>
+    /// DMM座標->DEG座標変換クラス
+    /// </summary>
     internal class DmmToDeg
     {
+        /// <summary>
+        /// DMM座標をDEG座標に変換する
+        /// </summary>
+        /// <param name="dmm">DMM座標</param>
+        /// <param name="nsew">E/W/N/Sを示す文字</param>
+        /// <returns>DEG座標</returns>
         public static double Convert(string dmm, string nsew)
         {
             int start = 2;

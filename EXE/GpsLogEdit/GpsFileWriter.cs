@@ -1,21 +1,25 @@
-﻿using NetTopologySuite.Triangulate.Tri;
-using System.Net;
-using System.Text;
-using System.Xml.Linq;
-using System.Drawing;
-using System;
-using System.IO;
-
+﻿//
+// GPSデータファイルライター
+//
+// MIT License
+// Copyright(c) 2024-2025 Sota. 
 
 namespace GpsLogEdit
 {
-
-    internal class PortionData
+    /// <summary>
+    /// トラックデータクラス
+    /// </summary>
+    internal class TrackData
     {
         public int startDataNumber;
         public int lastDataNumber;
 
-        public PortionData(int start, int last)
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        /// <param name="start">トラックの開始データ番号</param>
+        /// <param name="last">トラックの末尾データ番号</param>
+        public TrackData(int start, int last)
         {
             startDataNumber = start;
             lastDataNumber = last;
@@ -24,35 +28,37 @@ namespace GpsLogEdit
 
 
     /// <summary>
-    /// GPXファイルライタークラス
+    /// GPSファイルライタークラス
     /// </summary>
     internal class GpsFileWriter
     {
         private EditManager manager;
         private Form ownerForm;
         private PositionList positionList;
-        private List<PortionData> portionList;
+        private List<TrackData> trackList;
         private DefaultDataInfo defaultDataInfo;
 
         /// <summary>
-        /// GPXファイルライターのコンストラクタ
+        /// コンストラクタ
         /// </summary>
-        /// <param name="reader">GPXファイルリーダー</param>
-        /// <param name="manager">GPXファイル編集マネージャー</param>
-        /// <param name="owner">オーナーフォーム</param>
+        /// <param name="manager">編集マネージャ</param>
+        /// <param name="list">GPSデータリスト</param>
+        /// <param name="info">ファイルに書き込むデータ名などの情報</param>
+        /// <param name="owner">エラーダイアログを表示するときのオーナーフォーム</param>
         public GpsFileWriter(EditManager manager, PositionList list, DefaultDataInfo info, Form owner)
         {
             this.manager = manager;
             this.ownerForm = owner;
             positionList = list;
             defaultDataInfo = info;
-            portionList = new List<PortionData>();
+            trackList = new List<TrackData>();
         }
 
         /// <summary>
-        /// GPXファイル書き込みの確認を行う
+        /// 書き込み前の確認画面を表示
         /// </summary>
-        /// <returns>true=書き込みを実行する</returns>
+        /// <param name="type">ファイルタイプ</param>
+        /// <returns>確認情報</returns>
         public SaveNotifyInfo Notify(FileType type)
         {
             SaveNotifyInfo info = MakeDivideInformation();
@@ -71,15 +77,15 @@ namespace GpsLogEdit
         }
 
         /// <summary>
-        /// GPXファイルの分割情報を作成する
+        /// GPSファイルの分割情報を作成する
         /// </summary>
-        /// <returns>確認ウインドウに表示する分割情報</returns>
+        /// <returns>確認情報</returns>
         private SaveNotifyInfo MakeDivideInformation()
         {
             int divisionCount = manager.GetEditPositionCount(EditType.Divide);
             int start = 0;
             int next = 0;
-            PortionData portionData;
+            TrackData trackData;
 
             // 分割位置に従って各ファイル毎のデータ範囲を作成
             for (int i = 0; i < divisionCount; i++)
@@ -87,18 +93,18 @@ namespace GpsLogEdit
                 next = manager.GetEditedDataNumber(i, EditType.Divide);  // 分割位置を取得
                 if (next > 0)   // 先頭データの分割は無視
                 {
-                    portionData = new PortionData(start, next - 1);
-                    portionList.Add(portionData);
+                    trackData = new TrackData(start, next - 1);
+                    trackList.Add(trackData);
                     start = next;
                 }
             }
             // 残りのデータ範囲を作成
             next = positionList.GetPositionCount();
-            portionData = new PortionData(start, next - 1);
-            portionList.Add(portionData);
+            trackData = new TrackData(start, next - 1);
+            trackList.Add(trackData);
 
             SaveNotifyInfo info = new SaveNotifyInfo(defaultDataInfo);
-            foreach (PortionData p in portionList)
+            foreach (TrackData p in trackList)
             {
                 PositionData startData = positionList.GetPositionData(p.startDataNumber);
                 PositionData lastData = positionList.GetPositionData(p.lastDataNumber);
@@ -107,7 +113,13 @@ namespace GpsLogEdit
             return info;
         }
 
-
+        /// <summary>
+        /// ファイルへの書き込み
+        /// </summary>
+        /// <param name="pathName">ファイル名</param>
+        /// <param name="type">ファイルタイプ</param>
+        /// <param name="info">確認情報</param>
+        /// <returns>true=書き込み成功</returns>
         public bool WriteToFile(string pathName, FileType type, SaveNotifyInfo info)
         {
             bool status = false;
@@ -138,12 +150,17 @@ namespace GpsLogEdit
             return status;
         }
 
-
+        /// <summary>
+        /// GPXファイルに書き込む（トラック毎に別ファイル）
+        /// </summary>
+        /// <param name="pathName">ファイル名（ファイル名の末尾に part? と入る）</param>
+        /// <param name="info">確認情報</param>
+        /// <returns>true=書き込み成功</returns>
         private bool WriteToSeparateGpxFile(string pathName, SaveNotifyInfo info)
         {
             bool status = false;
             string savedNames = "";
-            int trackMax = portionList.Count;
+            int trackMax = trackList.Count;
             try
             {
                 string dirName = Path.GetDirectoryName(pathName) ?? "";
@@ -163,7 +180,7 @@ namespace GpsLogEdit
                     writer.WriteLine("<trkseg>");
 
                     // GPXファイルの本体を書き込む
-                    for (int i = portionList[track].startDataNumber; i <= portionList[track].lastDataNumber; i++)
+                    for (int i = trackList[track].startDataNumber; i <= trackList[track].lastDataNumber; i++)
                     {
                         if (!manager.IsEditedLine(i, EditType.Delete))  // 削除されていなければ書き込む
                         {
@@ -196,12 +213,17 @@ namespace GpsLogEdit
             return status;
         }
 
-
+        /// <summary>
+        /// GPXファイルへ書き込む（1つのファイル内でトラックを分ける）
+        /// </summary>
+        /// <param name="pathName">ファイル名</param>
+        /// <param name="info">確認情報</param>
+        /// <returns>true=書き込み成功</returns>
         private bool WriteToOneGpxFile(string pathName, SaveNotifyInfo info)
         {
             bool status = false;
             string savedNames = "";
-            int trackMax = portionList.Count;
+            int trackMax = trackList.Count;
             try
             {
                 using StreamWriter writer = new StreamWriter(pathName);
@@ -218,7 +240,7 @@ namespace GpsLogEdit
                     writer.WriteLine("<trkseg>");
 
                     // GPXファイルの本体を書き込む
-                    for (int i = portionList[track].startDataNumber; i <= portionList[track].lastDataNumber; i++)
+                    for (int i = trackList[track].startDataNumber; i <= trackList[track].lastDataNumber; i++)
                     {
                         if (!manager.IsEditedLine(i, EditType.Delete))  // 削除されていなければ書き込む
                         {
@@ -253,14 +275,17 @@ namespace GpsLogEdit
             return status;
         }
 
-
-
-
+        /// <summary>
+        /// KMLファイルに書き込む（トラック毎に別ファイル）
+        /// </summary>
+        /// <param name="pathName">ファイル名（ファイル名の末尾に part? と入る）</param>
+        /// <param name="info">確認情報</param>
+        /// <returns>true=書き込み成功</returns>
         private bool WriteToSeparateKmlFile(string pathName, SaveNotifyInfo info)
         {
             bool status = false;
             string savedNames = "";
-            int trackMax = portionList.Count;
+            int trackMax = trackList.Count;
             try
             {
                 string dirName = Path.GetDirectoryName(pathName) ?? "";
@@ -289,7 +314,7 @@ namespace GpsLogEdit
                     writer.WriteLine("<coordinates>");
 
                     // KMLファイルの本体を書き込む
-                    for (int i = portionList[track].startDataNumber; i <= portionList[track].lastDataNumber; i++)
+                    for (int i = trackList[track].startDataNumber; i <= trackList[track].lastDataNumber; i++)
                     {
                         if (!manager.IsEditedLine(i, EditType.Delete))  // 削除されていなければ書き込む
                         {
@@ -321,14 +346,17 @@ namespace GpsLogEdit
             return status;
         }
 
-
-
-
+        /// <summary>
+        /// KMLファイルに書き込む（1つのファイル内でトラックを分割）
+        /// </summary>
+        /// <param name="pathName">ファイル名</param>
+        /// <param name="info">確認情報</param>
+        /// <returns>true=書き込み成功</returns>
         private bool WriteToOneKmlFile(string pathName, SaveNotifyInfo info)
         {
             bool status = false;
             string savedNames = "";
-            int trackMax = portionList.Count;
+            int trackMax = trackList.Count;
             try
             {
                 using StreamWriter writer = new StreamWriter(pathName);
@@ -356,7 +384,7 @@ namespace GpsLogEdit
                     writer.WriteLine("<coordinates>");
 
                     // KMLファイルの本体を書き込む
-                    for (int i = portionList[track].startDataNumber; i <= portionList[track].lastDataNumber; i++)
+                    for (int i = trackList[track].startDataNumber; i <= trackList[track].lastDataNumber; i++)
                     {
                         if (!manager.IsEditedLine(i, EditType.Delete))  // 削除されていなければ書き込む
                         {

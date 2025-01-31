@@ -1,24 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
+﻿//
+// NMEAファイル解析
+//
+// MIT License
+// Copyright(c) 2024-2025 Sota. 
+
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace GpsLogEdit
 {
+    /// <summary>
+    /// NMEAファイル解析クラス
+    /// </summary>
     internal class NmeaFileAnalyzer
     {
         private string[] positionData;
 
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
         public NmeaFileAnalyzer()
         {
             positionData = new string[9];
         }
 
-
+        /// <summary>
+        /// ファイル全体を解析する
+        /// </summary>
+        /// <param name="gpxLines">読み込んだファイルの内容（行単位で分割）</param>
+        /// <param name="fileNumber">ファイル番号</param>
+        /// <param name="list">データリスト（これに追加していく）</param>
+        /// <returns>true=解析成功</returns>
         public bool Analyze(string[]? gpxLines, int fileNumber, PositionList list)
         {
             bool success = false;
@@ -75,6 +86,20 @@ namespace GpsLogEdit
             return success;
         }
 
+        /// <summary>
+        /// GPS1データ分の情報が揃ったら登録
+        /// </summary>
+        /// <param name="list">データリスト（これに追加していく）</param>
+        /// <param name="time">$GPGGA もしくは $GPRMC に記録されている時刻</param>
+        /// <remarks>
+        /// NMEAの情報は $GPGGA と ＄GPRMC の両方を読まないとデータが揃わない。
+        /// 例えば、時刻の情報は両方にあるが、日付のデータは $GPRMC のほうにしかないなど。
+        /// そこで、$GPGGA もしくは $GPRMC のどちらか先に現れた方の時刻を time に入れておき、
+        /// 後から現れた方の時刻と比較し、一致すればその2つを1つの位置情報として扱っている。
+        /// 時刻が違うときは、別の位置情報となる。
+        /// </remarks>
+        /// <param name="fileNumber">ファイル番号</param>
+        /// <returns>true=登録した</returns>
         private bool AddPositionIfComplete(PositionList list, string time, int fileNumber)
         {
             bool success = false;
@@ -113,7 +138,9 @@ namespace GpsLogEdit
             return success;
         }
 
-
+        /// <summary>
+        /// 読み込みデータをクリア
+        /// </summary>
         private void ClearPositionData()
         {
             positionData[(int)DataId.Latitude] = "";
@@ -127,18 +154,37 @@ namespace GpsLogEdit
             positionData[(int)DataId.ElevationUnit] = "";
         }
 
+        /// <summary>
+        /// 文字列がマッチするかチェック
+        /// </summary>
+        /// <param name="array">CSVの列ごとのデータアレイ</param>
+        /// <param name="column">どの列と比較するか</param>
+        /// <param name="match">正規表現の文字列</param>
+        /// <returns>true=マッチした</returns>
         private bool StringArrayMatch(string[] array, int column, string match)
         {
             bool status = ((array.Length > column) && Regex.IsMatch(array[column], match));
             return status;
         }
-
+        /// <summary>
+        /// 文字列がマッチしないかチェック
+        /// </summary>
+        /// <param name="array">CSVの列ごとのデータアレイ</param>
+        /// <param name="column">どの列と比較するか</param>
+        /// <param name="match">正規表現の文字列</param>
+        /// <returns>true=マッチしなかった</returns>
         private bool StringArrayNotMatch(string[] array, int column, string match)
         {
             bool status = ((array.Length > column) && !Regex.IsMatch(array[column], match));
             return status;
         }
 
+        /// <summary>
+        /// CSVの列のデータを取得
+        /// </summary>
+        /// <param name="array">CSVの列ごとのデータアレイ</param>
+        /// <param name="column">列番号</param>
+        /// <returns>列の文字列</returns>
         private string StringArrayGet(string[] array, int column)
         {
             string ret = "";

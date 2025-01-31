@@ -1,4 +1,10 @@
-﻿using Mapsui;
+﻿//
+// 地図の表示
+//
+// MIT License
+// Copyright(c) 2024-2025 Sota. 
+
+using Mapsui;
 using Mapsui.Extensions;
 using Mapsui.Layers;
 using Mapsui.Nts;
@@ -8,7 +14,6 @@ using Mapsui.Styles;
 using Mapsui.Tiling;
 using Mapsui.UI.WindowsForms;
 using Mapsui.Utilities;
-using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 
 namespace GpsLogEdit
@@ -58,20 +63,20 @@ namespace GpsLogEdit
     }
 
     /// <summary>
-    /// 地図クラス
+    /// 地図表示クラス
     /// </summary>
     internal class GpsMap
     {
-        private MapControl mapControl;
-        private ILayer? lineStringLayer;
-        private ILayer? currentPointLayer;
-        private ILayer? cutPointLayer;
-        private EditManager? editManager;
-        private Action<int>? formCallback;
-        private PositionList? positionList;
+        private MapControl mapControl;      // 地図を表示するフォーム上のコントロール
+        private ILayer? lineStringLayer;    // 経路を示す線を表示するレイヤー
+        private ILayer? currentPointLayer;  // 現在位置を示すマークを表示するレイヤー
+        private ILayer? cutPointLayer;      // 分割位置を示すマークを表示するレイヤー
+        private EditManager? editManager;   // 編集マネージャ
+        private Action<int>? formCallback;  // マップをクリックしたときにコールバックするメソッド
+        private PositionList? positionList; // 位置情報リスト
 
         /// <summary>
-        /// 地図のコンストラクタ
+        /// コンストラクタ
         /// </summary>
         /// <param name="control">地図を表示するフォーム上のコントロール</param>
         public GpsMap(MapControl control)
@@ -83,6 +88,7 @@ namespace GpsLogEdit
             //   Samples\Mapsui.Samples.Common\Extensions\SampleExtensions.cs : mapControl.Map = await asyncSample.CreateMapAsync();
             // を参考にしている
 
+            // マップを作成する
             Catch.Exceptions(async () =>
             {
                 await CreateMapAsync();
@@ -114,17 +120,27 @@ namespace GpsLogEdit
             positionList = list;
         }
 
+        /// <summary>
+        /// 編集マネージャを指定する
+        /// </summary>
+        /// <param name="manager">編集マネージャ</param>
+        public void SetEditManager(EditManager manager)
+        {
+            editManager = manager;
+        }
+
         // 以下のマップ表示部分は
         // Samples\Mapsui.Samples.Common\Maps\Geometries\PointsSample.cs
         // を参考にしている
 
         /// <summary>
-        /// マップを表示する
+        /// マップを作成して表示する
         /// </summary>
         /// <returns>タスク</returns>
         private Task<Map> CreateMapAsync()
         {
-            mapControl.Map.Layers.Add(OpenStreetMap.CreateTileLayer("user-agent-of-GpsLogEdit.Windows.Application"));
+            // マップを作成して表示
+            mapControl.Map.Layers.Add(OpenStreetMap.CreateTileLayer("user-agent-of-GpsLogEdit.Windows.Application"));   // 文字列はユーザーエージェント
 
             // 以下のマップのクリックイベントの処理部分は
             // Samples\Mapsui.Samples.Common\Maps\Demo\WriteToLayerSample.cs
@@ -135,6 +151,7 @@ namespace GpsLogEdit
             {
                 if ((positionList != null) && (positionList.GetPositionCount() > 0) && (formCallback != null))
                 {
+                    // クリックされた場所に一番近いGPSの位置データを探す
                     double minDist = Double.MaxValue;
                     int nearestIndex = -1;
                     for (int i = 0; i < positionList.GetPositionCount(); i++)
@@ -156,15 +173,6 @@ namespace GpsLogEdit
             return Task.FromResult(mapControl.Map);
         }
 
-        /// <summary>
-        /// 編集マネージャを指定する
-        /// </summary>
-        /// <param name="manager">編集マネージャ</param>
-        public void SetEditManager(EditManager manager)
-        {
-            editManager = manager;
-        }
-
         // 以下のトラック表示の部分は
         // Samples\Mapsui.Samples.Common\Maps\Geometries\LineStringSample.cs
         // を参考にしている
@@ -176,11 +184,13 @@ namespace GpsLogEdit
         {
             if ((positionList != null) && (positionList.GetPositionCount() > 0))
             {
+                // 既にトラックが表示中なら消去
                 if (lineStringLayer != null)
                 {
                     mapControl.Map.Layers.Remove(lineStringLayer);
                     lineStringLayer = null;
                 }
+                // トラックを表示
                 lineStringLayer = CreateLineStringLayer(out DoubleMinMaxRect minMaxRect);
                 mapControl.Map.Layers.Add(lineStringLayer);
 
@@ -193,9 +203,10 @@ namespace GpsLogEdit
         }
 
         /// <summary>
-        /// トラックを表示するストリングレイヤを作成する
+        /// トラックのストリングレイヤを作成する
         /// </summary>
-        /// <returns>レイヤ</returns>
+        /// <param name="minMaxRect">out トラック全体が表示できる矩形</param>
+        /// <returns>レイヤー</returns>
         private ILayer CreateLineStringLayer(out DoubleMinMaxRect minMaxRect)
         {
             minMaxRect = new DoubleMinMaxRect();
@@ -240,6 +251,7 @@ namespace GpsLogEdit
         {
             if ((positionList != null) && (positionList.GetPositionCount() > 0))
             {
+                // 既に現在位置が表示されていたら消去
                 if (currentPointLayer != null)
                 {
                     mapControl.Map.Layers.Remove(currentPointLayer);
@@ -255,7 +267,7 @@ namespace GpsLogEdit
                     mark.Longitude = data.longitude;
                     markList.Add(mark);
 
-                    currentPointLayer = CreatePointLayer(markList, "Point1", "embedded://GpsLogEdit.cross.png");
+                    currentPointLayer = CreatePointLayer(markList, "Point1", "embedded://GpsLogEdit.cross.png");    // 埋め込みリソースにある画像
                     mapControl.Map.Layers.Add(currentPointLayer);
 
                     MPoint mPoint = SphericalMercator.FromLonLat(data.longitude, data.latitude).ToMPoint();
@@ -271,6 +283,7 @@ namespace GpsLogEdit
         {
             if ((positionList != null) && (positionList.GetPositionCount() > 0) && (editManager != null))
             {
+                // 既に分割情報を表示中なら消去
                 if (cutPointLayer != null)
                 {
                     mapControl.Map.Layers.Remove(cutPointLayer);
@@ -289,7 +302,7 @@ namespace GpsLogEdit
                 }
                 if (markList.Count > 0)
                 {
-                    cutPointLayer = CreatePointLayer(markList, "Point2", "embedded://GpsLogEdit.scissors.png");
+                    cutPointLayer = CreatePointLayer(markList, "Point2", "embedded://GpsLogEdit.scissors.png");     // 埋め込みリソースにある画像
                     mapControl.Map.Layers.Add(cutPointLayer);
                 }
             }
@@ -315,7 +328,7 @@ namespace GpsLogEdit
         /// <summary>
         /// 位置リストを作成
         /// </summary>
-        /// <param name="positionList">位置リスト</param>
+        /// <param name="positionList">マークの位置リスト</param>
         /// <returns>位置リスト</returns>
         private static IEnumerable<IFeature> GetPointMarkList(List<PositionMark> positionList)
         {
