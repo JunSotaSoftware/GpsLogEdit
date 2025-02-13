@@ -1,4 +1,5 @@
 *.user
+*.cab
 .vs
 obj
 bin
