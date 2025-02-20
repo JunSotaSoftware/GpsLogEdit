@@ -147,7 +147,7 @@ namespace GpsLogEdit
             // を参考にしている
 
             // マップがクリックされると以下へ来る
-            mapControl.Map.Info += (s, e) =>
+            mapControl.Map.Tapped += (s, e) =>
             {
                 if ((positionList != null) && (positionList.GetPositionCount() > 0) && (formCallback != null))
                 {
@@ -168,6 +168,7 @@ namespace GpsLogEdit
                     // リストビューの項目を選択するメソッドをコールバック
                     formCallback(nearestIndex);
                 }
+                return true;
             };
 
             return Task.FromResult(mapControl.Map);
