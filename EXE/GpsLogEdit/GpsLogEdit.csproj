@@ -10,6 +10,9 @@
     <Company>Jun Sota</Company>
     <Authors>Jun Sota</Authors>
     <Copyright>Copyright(C) 2024-2025 Sota.</Copyright>
+	<Version>1.1.0</Version>
+	<PackageVersion>1.1.0.0</PackageVersion>
+	<AssemblyVersion>1.1.0.0</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>

@@ -20,6 +20,10 @@ namespace GpsLogEdit
         {
             InitializeComponent();
             ownerForm = owner;
+
+            System.Diagnostics.FileVersionInfo ver =
+            System.Diagnostics.FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            label1.Text = String.Format("GpsLogEdit Ver.{0}.{1}.{2}", ver.ProductMajorPart, ver.ProductMinorPart, ver.ProductBuildPart);
         }
 
         /// <summary>
@@ -79,6 +83,19 @@ namespace GpsLogEdit
             catch (Exception ex)
             {
                 CustomMessageBox.Show(ownerForm, ex.Message, "プロセス起動エラー", MessageBoxButtons.OK, MessageBoxIcon.None);
+            }
+        }
+
+        /// <summary>
+        /// ESCキーの処理
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void formAboutDialog_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Escape)
+            {
+                this.Close();
             }
         }
     }
