@@ -345,13 +345,13 @@ namespace GpsLogEdit
         /// </summary>
         /// <param name="imageSource">画像のソース</param>
         /// <returns>マーク</returns>
-        private static SymbolStyle CreatePointMarkStyle(string imageSource)
+        private static ImageStyle CreatePointMarkStyle(string imageSource)
         {
-            return new SymbolStyle
+            return new ImageStyle
             {
-                ImageSource = imageSource,
+                Image = imageSource,
                 SymbolScale = 1,
-                SymbolOffset = new Offset(0, 0)
+                Offset = new Offset(0, 0)
             };
         }
 
