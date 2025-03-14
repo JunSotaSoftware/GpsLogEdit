@@ -28,5 +28,5 @@ https://www.freepik.com/icons/gps
 
 Visual Studioの『ツール』→『NuGetパッケージマネージャ』→『パッケージマネージャコンソール』にて以下を実行。
 
-       PM> NuGet\Install-Package Mapsui.WindowsForms -Version 5.0.0-beta.8
+       PM> NuGet\Install-Package Mapsui.WindowsForms -Version 5.0.0-beta.9
 
