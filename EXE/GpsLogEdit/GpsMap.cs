@@ -168,7 +168,7 @@ namespace GpsLogEdit
                     // リストビューの項目を選択するメソッドをコールバック
                     formCallback(nearestIndex);
                 }
-                return true;
+                e.Handled = true;
             };
 
             return Task.FromResult(mapControl.Map);

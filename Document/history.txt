@@ -6,6 +6,9 @@ GpsLogEdit 改版リスト
 ■Ver.1.2.0
 ・Mapsuiライブラリを5.0.0-beta.9に変更。
 
+■Ver.1.3.0
+・Mapsuiライブラリを5.0.0-beta.11に変更。
+
 
 
 
