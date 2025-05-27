@@ -340,7 +340,6 @@
             mapControl1.Name = "mapControl1";
             mapControl1.Size = new Size(824, 293);
             mapControl1.TabIndex = 9;
-            mapControl1.UpdateInterval = 16;
             // 
             // buttonPrevSplitPos
             // 

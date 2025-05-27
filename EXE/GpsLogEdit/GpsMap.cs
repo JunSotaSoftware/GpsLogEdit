@@ -143,11 +143,11 @@ namespace GpsLogEdit
             mapControl.Map.Layers.Add(OpenStreetMap.CreateTileLayer("user-agent-of-GpsLogEdit.Windows.Application"));   // 文字列はユーザーエージェント
 
             // 以下のマップのクリックイベントの処理部分は
-            // Samples\Mapsui.Samples.Common\Maps\Demo\WriteToLayerSample.cs
+            // Samples\Mapsui.Samples.Common\Maps\Demo\AddPinsSample.cs (旧 WriteToLayerSample.cs)
             // を参考にしている
 
             // マップがクリックされると以下へ来る
-            mapControl.Map.Tapped += (s, e) =>
+            mapControl.Map.Tapped += (m, e) =>
             {
                 if ((positionList != null) && (positionList.GetPositionCount() > 0) && (formCallback != null))
                 {
