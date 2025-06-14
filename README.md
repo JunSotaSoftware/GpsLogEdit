@@ -5,7 +5,7 @@
 **Mapsuiライブラリ**  
 
 GpsLogEditは地図の表示にMapsuiライブラリを使用します。  
-GpsLogEdit開発時点では、Mapsuiライブラリのバージョンは 5.0.0-beta.16 です。  
+GpsLogEdit開発時点では、Mapsuiライブラリのバージョンは 5.0.0-beta.17 です。  
 https://mapsui.com/  
 Copyright (c) 2022 The Mapsui authors  
 
@@ -28,5 +28,5 @@ https://www.freepik.com/icons/gps
 
 Visual Studioの『ツール』→『NuGetパッケージマネージャ』→『パッケージマネージャコンソール』にて以下を実行。
 
-       PM> NuGet\Install-Package Mapsui.WindowsForms -Version 5.0.0-beta.16
+       PM> NuGet\Install-Package Mapsui.WindowsForms -Version 5.0.0-beta.17
 
