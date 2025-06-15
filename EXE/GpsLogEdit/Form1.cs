@@ -872,6 +872,9 @@ namespace GpsLogEdit
             appendToolStripMenuItem.Enabled = false;
             saveToGpxToolStripMenuItem.Enabled = false;
             saveToKmlToolStripMenuItem.Enabled = false;
+
+            projectFile = "";
+            defaultDataInfo.Clear();
         }
 
         /// <summary>
@@ -932,6 +935,9 @@ namespace GpsLogEdit
                             }
                             defaultDataInfo.SetSeparate(project.GetSeparate());
                             defaultDataInfo.SetName(project.GetDataName());
+
+                            // プロジェクト保存時のデフォルトファイル名となるように、読み込んだファイル名を記録
+                            projectFile = Path.GetFileName(file);
                         }
                         modified = false;
                     }
@@ -947,6 +953,12 @@ namespace GpsLogEdit
         /// <param name="e"></param>
         private void menuSaveProject_Click(object sender, EventArgs e)
         {
+            // プロジェクトファイル名がない場合は、データ名をデフォルトのファイル名とする
+            if (String.IsNullOrEmpty(projectFile))
+            {
+                projectFile = defaultDataInfo.GetName();
+            }
+
             FilePicker picker = new FilePicker();
             string file = picker.ShowSaveProjectDialog(projectFile);
             if (file.Length > 0)
