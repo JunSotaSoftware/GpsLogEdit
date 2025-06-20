@@ -84,7 +84,7 @@ namespace GpsLogEdit
             string[] cmds = Environment.GetCommandLineArgs();
             if (cmds.Length > 1)    // cmds[0] はexeのパス名が入る
             {
-                OpenSomething(cmds);
+                OpenSomething(cmds, 1);
             }
         }
 
@@ -119,17 +119,18 @@ namespace GpsLogEdit
         /// コマンドラインで指定された何らかのファイルを開く
         /// </summary>
         /// <param name="cmds">コマンドライン引数</param>
-        private void OpenSomething(string[] cmds)
+        /// <param name="skip">引数のうち最初にスキップする個数</param>
+        private void OpenSomething(string[] cmds, int skip)
         {
-            if (cmds[1].EndsWith(".gedpf", true, null))
+            if (cmds[skip].EndsWith(".gedpf", true, null))
             {
                 // プロジェクトファイルとして開く
-                OpenProjectProcCommon(cmds[1]);
+                OpenProjectProcCommon(cmds[skip]);
             }
             else
             {
                 // GPSデータファイルとして開く
-                List<string?> list = cmds.Skip(1).OfType<string?>().ToList();
+                List<string?> list = cmds.Skip(skip).OfType<string?>().ToList();
                 ReadProcCommon(list);
             }
         }
@@ -1099,6 +1100,41 @@ namespace GpsLogEdit
             ShowMarkMessage();
             buttonMark.Enabled = false;
             buttonSelectToMark.Enabled = false;
+        }
+
+        /// <summary>
+        /// ドロップされたファイルを受け取る
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void listViewGpxLog_DragDrop(object sender, DragEventArgs e)
+        {
+            if (e.Data != null)
+            {
+                string[]? files = (string[]?)e.Data.GetData(DataFormats.FileDrop, false);
+                if (files != null)
+                {
+                    OpenSomething(files, 0);
+                }
+            }
+
+        }
+
+        /// <summary>
+        /// ドラッグ中のマウスカーソルの変更
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void listViewGpxLog_DragEnter(object sender, DragEventArgs e)
+        {
+            if ((e.Data != null) && (e.Data.GetDataPresent(DataFormats.FileDrop)))
+            {
+                e.Effect = DragDropEffects.All;
+            }
+            else
+            {
+                e.Effect = DragDropEffects.None;
+            }
         }
     }
 }

@@ -78,6 +78,7 @@
             // 
             // listGpxLog
             // 
+            listGpxLog.AllowDrop = true;
             listGpxLog.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             listGpxLog.Columns.AddRange(new ColumnHeader[] { columnHeader1, columnHeader2, columnHeader3, columnHeader4, columnHeader5, columnHeader6, columnHeader7, columnHeader8 });
             tableLayoutPanel2.SetColumnSpan(listGpxLog, 9);
@@ -93,6 +94,8 @@
             listGpxLog.RetrieveVirtualItem += listViewGpxLog_RetrieveVirtualItem;
             listGpxLog.SelectedIndexChanged += listViewGpxLog_SelectedIndexChanged;
             listGpxLog.VirtualItemsSelectionRangeChanged += listViewGpxLog_VirtualItemsSelectionRangeChanged;
+            listGpxLog.DragDrop += listViewGpxLog_DragDrop;
+            listGpxLog.DragEnter += listViewGpxLog_DragEnter;
             listGpxLog.MouseClick += listViewGpxLog_MouseClick;
             // 
             // columnHeader1
