@@ -226,10 +226,8 @@ namespace GpsLogEdit
 
             IStyle? style = new VectorStyle
             {
-                Fill = null,
-                Outline = null,
-#pragma warning disable CS8670 // Object or collection initializer implicitly dereferences possibly null member.
-                Line = { Color = Mapsui.Styles.Color.Blue, Width = 4 }
+                Outline = new Mapsui.Styles.Pen { Color = Mapsui.Styles.Color.Blue, Width = 1 },
+                Line = new Mapsui.Styles.Pen { Color = Mapsui.Styles.Color.Blue, Width = 2 }
             };
 
             return new MemoryLayer
