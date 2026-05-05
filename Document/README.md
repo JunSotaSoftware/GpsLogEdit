@@ -53,7 +53,7 @@ GpsLogEditはフリーソフトです。個人使用、業務使用のいずれ�
 
 本ソフトウエアの扱いはMITライセンスに従う物とします。  
 
-Copyright(c) 2024-2025 Sota.  
+Copyright(c) 2024-2026 Sota.  
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:  
 
@@ -63,7 +63,7 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 
 **以下は日本語訳（参考）**  
 
-Copyright (c) 2024-2025 Sota.  
+Copyright (c) 2024-2026 Sota.  
 
 本ソフトウェアおよび関連する文書のファイル（以下「ソフトウェア」）の複製を取得した全ての人物に対し、以下の条件に従うことを前提に、ソフトウェアを無制限に扱うことを無償で許可します。これには、ソフトウェアの複製を使用、複製、改変、結合、公開、頒布、再許諾、および/または販売する権利、およびソフトウェアを提供する人物に同様の行為を許可する権利が含まれますが、これらに限定されません。  
 
@@ -76,7 +76,7 @@ Copyright (c) 2024-2025 Sota.
 **Mapsuiライブラリ**  
 
 GpsLogEditは地図の表示にMapsuiライブラリを使用します。  
-GpsLogEdit開発時点では、Mapsuiライブラリのバージョンは 5.1.0-beta.6 です。  
+GpsLogEdit開発時点では、Mapsuiライブラリのバージョンは 5.1.0-beta.7 です。  
 https://mapsui.com/  
 Copyright (c) 2022 The Mapsui authors  
 
@@ -99,5 +99,5 @@ https://www.freepik.com/icons/gps
 
 Visual Studioの『ツール』→『NuGetパッケージマネージャ』→『パッケージマネージャコンソール』にて以下を実行。
 
-       PM> NuGet\Install-Package Mapsui.WindowsForms -Version 5.1.0-beta.6
+       PM> NuGet\Install-Package Mapsui.WindowsForms -Version 5.1.0-beta.7
 
