@@ -10,13 +10,13 @@ namespace GpsLogEdit
 {
     public partial class FormAboutDialog : Form
     {
-        private Form ownerForm;
+        private Form1 ownerForm;
 
         /// <summary>
         /// コンストラクタ
         /// </summary>
         /// <param name="owner">オーナーフォーム</param>
-        public FormAboutDialog(Form owner)
+        public FormAboutDialog(Form1 owner)
         {
             InitializeComponent();
             ownerForm = owner;
@@ -24,6 +24,9 @@ namespace GpsLogEdit
             System.Diagnostics.FileVersionInfo ver =
             System.Diagnostics.FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly().Location);
             label1.Text = String.Format("GpsLogEdit Ver.{0}.{1}.{2}", ver.ProductMajorPart, ver.ProductMinorPart, ver.ProductBuildPart);
+
+            string mapsuiVersion = owner.GetMapsuiVarsionString();
+            label2.Text = String.Format("Mapsui Version {0}", mapsuiVersion);
         }
 
         /// <summary>

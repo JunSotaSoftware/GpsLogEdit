@@ -15,6 +15,7 @@ using Mapsui.Tiling;
 using Mapsui.UI.WindowsForms;
 using Mapsui.Utilities;
 using NetTopologySuite.Geometries;
+using Version = Mapsui.Utilities.Version;
 
 namespace GpsLogEdit
 {
@@ -376,6 +377,16 @@ namespace GpsLogEdit
                 cutPointLayer = null;
             }
         }
+
+        /// <summary>
+        /// Mapsuiのバージョンを取得する
+        /// </summary>
+        /// <returns>string バージョン文字列</returns>
+        public string GetVersion()
+        {
+            System.Version? version = Version.GetCurrentVersion();
+            string versionString = version.ToString();
+            return versionString;
+        }
     }
 }
-

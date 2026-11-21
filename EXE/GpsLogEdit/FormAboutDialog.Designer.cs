@@ -35,22 +35,23 @@
             linkLabel2 = new LinkLabel();
             linkLabel1 = new LinkLabel();
             linkLabel4 = new LinkLabel();
+            label2 = new Label();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
             // label1
             // 
-            label1.AutoSize = true;
-            label1.Location = new Point(122, 29);
+            label1.Location = new Point(-5, 29);
             label1.Name = "label1";
-            label1.Size = new Size(17, 15);
+            label1.Size = new Size(353, 15);
             label1.TabIndex = 0;
             label1.Text = "--";
+            label1.TextAlign = ContentAlignment.TopCenter;
             // 
             // buttonAboutOk
             // 
             buttonAboutOk.DialogResult = DialogResult.OK;
-            buttonAboutOk.Location = new Point(263, 147);
+            buttonAboutOk.Location = new Point(263, 163);
             buttonAboutOk.Name = "buttonAboutOk";
             buttonAboutOk.Size = new Size(75, 23);
             buttonAboutOk.TabIndex = 1;
@@ -83,12 +84,12 @@
             // 
             linkLabel1.AutoSize = true;
             linkLabel1.LinkArea = new LinkArea(23, 4);
-            linkLabel1.Location = new Point(100, 55);
+            linkLabel1.Location = new Point(81, 55);
             linkLabel1.Name = "linkLabel1";
             linkLabel1.Size = new Size(188, 20);
             linkLabel1.TabIndex = 5;
             linkLabel1.TabStop = true;
-            linkLabel1.Text = "Copyright(C) 2024-2025 Sota.";
+            linkLabel1.Text = "Copyright(C) 2024-2026 Sota.";
             linkLabel1.UseCompatibleTextRendering = true;
             linkLabel1.LinkClicked += linkLabel1_LinkClicked;
             // 
@@ -105,11 +106,22 @@
             linkLabel4.UseCompatibleTextRendering = true;
             linkLabel4.LinkClicked += linkLabel4_LinkClicked;
             // 
+            // label2
+            // 
+            label2.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            label2.Location = new Point(-5, 133);
+            label2.Name = "label2";
+            label2.Size = new Size(353, 15);
+            label2.TabIndex = 7;
+            label2.Text = "--";
+            label2.TextAlign = ContentAlignment.TopCenter;
+            // 
             // FormAboutDialog
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(350, 178);
+            ClientSize = new Size(350, 198);
+            Controls.Add(label2);
             Controls.Add(linkLabel4);
             Controls.Add(linkLabel1);
             Controls.Add(linkLabel2);
@@ -138,5 +150,6 @@
         private LinkLabel linkLabel2;
         private LinkLabel linkLabel1;
         private LinkLabel linkLabel4;
+        private Label label2;
     }
 }

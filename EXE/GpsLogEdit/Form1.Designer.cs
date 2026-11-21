@@ -56,6 +56,8 @@
             座標表示形式DToolStripMenuItem = new ToolStripMenuItem();
             dEGToolStripMenuItem = new ToolStripMenuItem();
             dMSToolStripMenuItem = new ToolStripMenuItem();
+            toolStripSeparator5 = new ToolStripSeparator();
+            statisticsWindowSwitchMenuItem = new ToolStripMenuItem();
             オプションOToolStripMenuItem = new ToolStripMenuItem();
             saveWindowPosToolStripMenuItem = new ToolStripMenuItem();
             HelpToolStripMenuItem = new ToolStripMenuItem();
@@ -233,7 +235,7 @@
             // 
             // 表示VToolStripMenuItem
             // 
-            表示VToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { 座標表示形式DToolStripMenuItem });
+            表示VToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { 座標表示形式DToolStripMenuItem, toolStripSeparator5, statisticsWindowSwitchMenuItem });
             表示VToolStripMenuItem.Name = "表示VToolStripMenuItem";
             表示VToolStripMenuItem.Size = new Size(61, 20);
             表示VToolStripMenuItem.Text = "表示(&V)";
@@ -242,7 +244,7 @@
             // 
             座標表示形式DToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { dEGToolStripMenuItem, dMSToolStripMenuItem });
             座標表示形式DToolStripMenuItem.Name = "座標表示形式DToolStripMenuItem";
-            座標表示形式DToolStripMenuItem.Size = new Size(165, 22);
+            座標表示形式DToolStripMenuItem.Size = new Size(217, 22);
             座標表示形式DToolStripMenuItem.Text = "座標表示形式(&D)";
             // 
             // dEGToolStripMenuItem
@@ -258,6 +260,19 @@
             dMSToolStripMenuItem.Size = new Size(121, 22);
             dMSToolStripMenuItem.Text = "DMS(&M)";
             dMSToolStripMenuItem.Click += menuSelectDms_Click;
+            // 
+            // toolStripSeparator5
+            // 
+            toolStripSeparator5.Name = "toolStripSeparator5";
+            toolStripSeparator5.Size = new Size(214, 6);
+            // 
+            // statisticsWindowSwitchMenuItem
+            // 
+            statisticsWindowSwitchMenuItem.CheckOnClick = true;
+            statisticsWindowSwitchMenuItem.Name = "statisticsWindowSwitchMenuItem";
+            statisticsWindowSwitchMenuItem.Size = new Size(217, 22);
+            statisticsWindowSwitchMenuItem.Text = "統計情報ウインドウを表示(&S)";
+            statisticsWindowSwitchMenuItem.Click += menuStatisticsSwitch_Click;
             // 
             // オプションOToolStripMenuItem
             // 
@@ -455,6 +470,7 @@
             Text = "GpsLogEdit";
             FormClosing += form1_FormClosing;
             Load += form1_Load;
+            Shown += form1_Shown;
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             tableLayoutPanel2.ResumeLayout(false);
@@ -507,5 +523,7 @@
         private Mapsui.UI.WindowsForms.MapControl mapControl1;
         private Button buttonSelectToMark;
         private LinkLabel linkLabelMarkPos;
+        private ToolStripSeparator toolStripSeparator5;
+        private ToolStripMenuItem statisticsWindowSwitchMenuItem;
     }
 }

@@ -1,8 +1,8 @@
 ﻿//
-// DEG座標をDMS座標に変換
+// DMM座標をDEG座標に変換
 //
 // MIT License
-// Copyright(c) 2024-2025 Sota. 
+// Copyright(c) 2024-2025 Sota.
 
 namespace GpsLogEdit
 {

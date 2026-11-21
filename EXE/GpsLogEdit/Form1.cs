@@ -32,6 +32,7 @@ namespace GpsLogEdit
         private DefaultDataInfo defaultDataInfo;
         private string projectFile;
         private int markPos;
+        private FormStatisticsWindow? formStatisticsWindow;
 
         /// <summary>
         /// メインフォームのコンストラクタ
@@ -43,6 +44,7 @@ namespace GpsLogEdit
 #endif
             InitializeComponent();
             bool dms = Properties.Settings.Default.Dms;
+            statisticsWindowSwitchMenuItem.Checked = Properties.Settings.Default.StatisticsWindow;
             dEGToolStripMenuItem.Checked = !dms;
             dMSToolStripMenuItem.Checked = dms;
             buttonSplitGpxFile.Enabled = false;
@@ -55,6 +57,7 @@ namespace GpsLogEdit
             saveToKmlToolStripMenuItem.Enabled = false;
             modified = false;
             projectFile = "";
+            formStatisticsWindow = null;
             ClearMarkPos();
 
 #if HELP_CONTEXT_NOT_EXIST
@@ -113,6 +116,16 @@ namespace GpsLogEdit
                 // ウインドウのサイズを復元
                 this.Size = Properties.Settings.Default.F1Size;
             }
+        }
+
+        /// <summary>
+        /// フォームが開かれた後の処理
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void form1_Shown(object sender, EventArgs e)
+        {
+            StatisticWindowSwitchCommon();
         }
 
         /// <summary>
@@ -480,6 +493,13 @@ namespace GpsLogEdit
 
             if (!e.Cancel)
             {
+                // 統計情報ウインドウをまず閉じる
+                if ((formStatisticsWindow != null) && (!formStatisticsWindow.IsDisposed))
+                {
+                    formStatisticsWindow.FormClosedEvent -= SetStatisticWindowSwitchOff;
+                    formStatisticsWindow.Close();
+                }
+
                 // 閉じるときはウインドのサイズと位置を保存
                 if (this.WindowState == FormWindowState.Normal)
                 {
@@ -492,6 +512,7 @@ namespace GpsLogEdit
                     Properties.Settings.Default.F1Size = this.RestoreBounds.Size;
                 }
                 Properties.Settings.Default.SaveWindowPos = saveWindowPosToolStripMenuItem.Checked;
+                Properties.Settings.Default.StatisticsWindow = statisticsWindowSwitchMenuItem.Checked;
                 Properties.Settings.Default.Save();
             }
         }
@@ -508,6 +529,15 @@ namespace GpsLogEdit
                 dlg.Owner = this;
                 dlg.ShowDialog();
             }
+        }
+
+        /// <summary>
+        /// Mapsuiのバージョンを文字列で取得する
+        /// </summary>
+        /// <returns>string バージョン文字列</returns>
+        public string GetMapsuiVarsionString()
+        {
+            return gpsMap.GetVersion();
         }
 
         /// <summary>
@@ -1135,6 +1165,48 @@ namespace GpsLogEdit
             {
                 e.Effect = DragDropEffects.None;
             }
+        }
+
+        /// <summary>
+        /// 統計情報ウインドウ表示メニューがクリックされた
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void menuStatisticsSwitch_Click(object sender, EventArgs e)
+        {
+            StatisticWindowSwitchCommon();
+        }
+
+        /// <summary>
+        /// 統計情報ウインドウのON/OFF共通処理
+        /// </summary>
+        private void StatisticWindowSwitchCommon()
+        {
+            if (statisticsWindowSwitchMenuItem.Checked)
+            {
+                if ((formStatisticsWindow == null) || (formStatisticsWindow.IsDisposed))
+                {
+                    formStatisticsWindow = new FormStatisticsWindow(saveWindowPosToolStripMenuItem.Checked);
+                    // フォームの×ボタンで統計情報ウインドウが閉じられたら、メニューのチェックマークを外す
+                    formStatisticsWindow.FormClosedEvent += SetStatisticWindowSwitchOff;
+                    formStatisticsWindow.Show();
+                }
+            }
+            else
+            {
+                if ((formStatisticsWindow != null) && (!formStatisticsWindow.IsDisposed))
+                {
+                    formStatisticsWindow.Close();
+                }
+            }
+        }
+
+        /// <summary>
+        /// 統計情報ウインドウのスイッチをOFFにする
+        /// </summary>
+        private void SetStatisticWindowSwitchOff()
+        {
+            statisticsWindowSwitchMenuItem.Checked = false;
         }
     }
 }
